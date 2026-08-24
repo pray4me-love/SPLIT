@@ -65,6 +65,11 @@ const questions = [
   }
 ];
 
+
+// ================================
+// POLL SYSTEM
+// ================================
+
 let userVotes = JSON.parse(
   localStorage.getItem("splitVotes") || "{}"
 );
@@ -77,6 +82,7 @@ function saveVotes() {
 }
 
 function getPercentage(questionIndex, optionIndex) {
+
   const key = `${questionIndex}-${optionIndex}`;
 
   const saved = localStorage.getItem(
@@ -94,9 +100,10 @@ function saveVote(questionIndex, optionIndex) {
 
   saveVotes();
 
-  // Demo percentage system.
-  // Later this will be replaced with a real database.
-  const currentA = getPercentage(questionIndex, 0);
+  const currentA = getPercentage(
+    questionIndex,
+    0
+  );
 
   let newA = currentA;
 
@@ -180,6 +187,7 @@ function createPoll(question, index) {
       saveVote(index, option);
 
       renderQuestions();
+
     });
 
   });
@@ -189,19 +197,22 @@ function createPoll(question, index) {
 
 function renderQuestions() {
 
-  const feed = document.getElementById("feed");
+  const feed =
+    document.getElementById("feed");
 
   if (!feed) return;
 
   feed.innerHTML = "";
 
-  questions.forEach((question, index) => {
+  questions.forEach(
+    (question, index) => {
 
-    feed.appendChild(
-      createPoll(question, index)
-    );
+      feed.appendChild(
+        createPoll(question, index)
+      );
 
-  });
+    }
+  );
 }
 
 function randomQuestion() {
@@ -210,42 +221,384 @@ function randomQuestion() {
     Math.random() * questions.length
   );
 
-  const question = questions[index];
+  const question =
+    questions[index];
 
   alert(
-    `${question.category}\n\n${question.question}\n\n` +
-    `${question.options[0]}  OR  ${question.options[1]}`
+    `${question.category}\n\n` +
+    `${question.question}\n\n` +
+    `${question.options[0]}  OR  ` +
+    `${question.options[1]}`
   );
 }
 
-function initialize() {
 
-  renderQuestions();
+// ================================
+// REFRESH BUTTON
+// ================================
 
-  const refreshButton =
-    document.getElementById("refreshBtn");
+const refreshButton =
+  document.getElementById("refreshBtn");
 
-  if (refreshButton) {
+if (refreshButton) {
 
-    refreshButton.addEventListener(
-      "click",
-      renderQuestions
-    );
+  refreshButton.addEventListener(
+    "click",
+    () => {
 
-  }
+      renderQuestions();
 
-  const randomButton =
-    document.getElementById("randomBtn");
+      const trending =
+        document.getElementById(
+          "trending"
+        );
 
-  if (randomButton) {
+      if (trending) {
+        trending.scrollIntoView({
+          behavior: "smooth"
+        });
+      }
 
-    randomButton.addEventListener(
-      "click",
-      randomQuestion
-    );
-
-  }
+    }
+  );
 
 }
 
-initialize();
+
+// ================================
+// SURPRISE ME
+// ================================
+
+const randomButton =
+  document.getElementById("randomBtn");
+
+if (randomButton) {
+
+  randomButton.addEventListener(
+    "click",
+    () => {
+
+      const games =
+        document.getElementById("games");
+
+      if (games) {
+
+        games.scrollIntoView({
+          behavior: "smooth"
+        });
+
+      }
+
+      const choiceResult =
+        document.getElementById(
+          "choiceResult"
+        );
+
+      if (choiceResult) {
+
+        choiceResult.textContent =
+          "Surprise: pick one. No overthinking.";
+
+      }
+
+    }
+  );
+
+}
+
+
+// ================================
+// THIS OR THAT
+// ================================
+
+const choices =
+  document.querySelectorAll(
+    "#choice button"
+  );
+
+choices.forEach(button => {
+
+  button.addEventListener(
+    "click",
+    () => {
+
+      const result =
+        document.getElementById(
+          "choiceResult"
+        );
+
+      if (result) {
+
+        result.textContent =
+          `You picked: ${button.textContent}. Defend your choice.`;
+
+      }
+
+    }
+  );
+
+});
+
+
+// ================================
+// HOT TAKE
+// ================================
+
+const takes = [
+  "“Brunch is just breakfast with better PR.”",
+  "“Voice notes longer than 2 minutes are podcasts.”",
+  "“The best part of a concert is the 10 seconds you film.”",
+  "“Group chats are 90% memes and 10% emergency services.”"
+];
+
+let takeIndex = 0;
+
+const takeElement =
+  document.getElementById("take");
+
+const rateButtons =
+  document.querySelectorAll(
+    "[data-rate]"
+  );
+
+rateButtons.forEach(button => {
+
+  button.addEventListener(
+    "click",
+    () => {
+
+      const result =
+        document.getElementById(
+          "takeResult"
+        );
+
+      if (result) {
+
+        result.textContent =
+          `You rated it ${button.dataset.rate}/4. Very scientific.`;
+
+      }
+
+    }
+  );
+
+});
+
+setInterval(() => {
+
+  if (!takeElement) return;
+
+  takeIndex =
+    (takeIndex + 1) % takes.length;
+
+  takeElement.textContent =
+    takes[takeIndex];
+
+}, 5000);
+
+
+// ================================
+// RANK IT
+// ================================
+
+let foods = [
+  "Ramen",
+  "Pizza",
+  "Fries",
+  "Ice cream"
+];
+
+const rankList =
+  document.getElementById(
+    "rankList"
+  );
+
+function drawRank() {
+
+  if (!rankList) return;
+
+  rankList.innerHTML = "";
+
+  foods.forEach(
+    (food, index) => {
+
+      const item =
+        document.createElement(
+          "div"
+        );
+
+      item.className =
+        "rank-item";
+
+      item.draggable = true;
+
+      item.innerHTML = `
+        <b>${index + 1}</b>
+        <span>${food}</span>
+      `;
+
+      item.addEventListener(
+        "dragstart",
+        event => {
+
+          event.dataTransfer.setData(
+            "text/plain",
+            index
+          );
+
+        }
+      );
+
+      item.addEventListener(
+        "dragover",
+        event => {
+
+          event.preventDefault();
+
+        }
+      );
+
+      item.addEventListener(
+        "drop",
+        event => {
+
+          const from =
+            Number(
+              event.dataTransfer.getData(
+                "text/plain"
+              )
+            );
+
+          const to = index;
+
+          [
+            foods[from],
+            foods[to]
+          ] = [
+            foods[to],
+            foods[from]
+          ];
+
+          drawRank();
+
+        }
+      );
+
+      rankList.appendChild(item);
+
+    }
+  );
+}
+
+drawRank();
+
+const rankButton =
+  document.getElementById(
+    "rankBtn"
+  );
+
+if (rankButton) {
+
+  rankButton.addEventListener(
+    "click",
+    () => {
+
+      const result =
+        document.getElementById(
+          "rankResult"
+        );
+
+      if (result) {
+
+        result.textContent =
+          `Locked: ${foods.join(" → ")}`;
+
+      }
+
+    }
+  );
+
+}
+
+
+// ================================
+// CREATE / SUBMIT IDEA
+// ================================
+
+const ideaForm =
+  document.getElementById(
+    "ideaForm"
+  );
+
+if (ideaForm) {
+
+  ideaForm.addEventListener(
+    "submit",
+    event => {
+
+      event.preventDefault();
+
+      const message =
+        document.getElementById(
+          "ideaMsg"
+        );
+
+      if (message) {
+
+        message.textContent =
+          "Idea saved in this demo. Connect a database to collect real submissions.";
+
+      }
+
+      ideaForm.reset();
+
+    }
+  );
+
+}
+
+
+// ================================
+// SHARE SPLIT
+// ================================
+
+const shareButton =
+  document.getElementById(
+    "shareHero"
+  );
+
+if (shareButton) {
+
+  shareButton.addEventListener(
+    "click",
+    async () => {
+
+      try {
+
+        await navigator.clipboard.writeText(
+          location.href
+        );
+
+        alert(
+          "Link copied."
+        );
+
+      } catch {
+
+        alert(
+          "Copy this page URL to share it."
+        );
+
+      }
+
+    }
+  );
+
+}
+
+
+// ================================
+// START
+// ================================
+
+renderQuestions();
