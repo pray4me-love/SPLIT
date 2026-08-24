@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="SPLIT — tiny games, debates, rankings and social challenges for bored people.">
+<title>SPLIT — You decide.</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header>
+  <a class="logo" href="#top">PULSE<span>BOX</span></a>
+  <nav>
+    <a href="#trending">Trending</a>
+    <a href="#games">Games</a>
+    <a href="#create">Create</a>
+  </nav>
+  <button class="pill small" id="randomBtn">Surprise me</button>
+</header>
+
+<main id="top">
+<section class="hero">
+  <div class="hero-copy">
+    <div class="live"><i></i> LIVE · PEOPLE ARE VOTING</div>
+    <h1>Have an opinion?<br><em>Prove it.</em></h1>
+    <p>Quick-fire polls, rankings, hot takes and tiny games. No essay required.</p>
+    <div class="hero-actions">
+      <a class="pill" href="#trending">Start scrolling ↓</a>
+      <button class="ghost" id="shareHero">Share SPLIT ↗</button>
+    </div>
+  </div>
+  <div class="hero-orbit">
+    <div class="orbit-card c1"><b>Best late-night snack?</b><span>🍜</span></div>
+    <div class="orbit-card c2"><b>Is texting “k” actually rude?</b><span>💬</span></div>
+    <div class="orbit-card c3"><b>Rank these movie villains.</b><span>🎬</span></div>
+    <div class="orb">?</div>
+  </div>
+</section>
+
+<section class="ticker"><span>HOT TAKES</span><span>GEN Z</span><span>FOOD</span><span>MOVIES</span><span>MUSIC</span><span>RELATIONSHIPS</span><span>GAMES</span><span>HOT TAKES</span></section>
+
+<section id="trending" class="section">
+  <div class="section-top">
+    <div><p class="eyebrow">RIGHT NOW</p><h2>People are arguing about this.</h2></div>
+    <button class="text-btn" id="refreshBtn">Refresh ↻</button>
+  </div>
+  <div class="feed" id="feed"></div>
+</section>
+
+<section id="games" class="section dark">
+  <div class="section-top">
+    <div><p class="eyebrow">KILL 5 MINUTES</p><h2>Mini games.</h2></div>
+    <p class="subtle">Play, screenshot your result, send it to a friend.</p>
+  </div>
+  <div class="game-grid">
+    <article class="game-card">
+      <div class="game-icon">⚡</div>
+      <p class="eyebrow">THIS OR THAT</p>
+      <h3>Choose fast.<br>No explaining.</h3>
+      <div class="choice" id="choice"><button data-a>Night out</button><span>OR</span><button data-b>Night in</button></div>
+      <p class="result" id="choiceResult"></p>
+    </article>
+    <article class="game-card">
+      <div class="game-icon">🎯</div>
+      <p class="eyebrow">HOT TAKE</p>
+      <h3>Rate the take.</h3>
+      <p class="take" id="take">“Brunch is just breakfast with better PR.”</p>
+      <div class="rate"><button data-rate="1">😐</button><button data-rate="2">🤨</button><button data-rate="3">🔥</button><button data-rate="4">💀</button></div>
+      <p class="result" id="takeResult"></p>
+    </article>
+    <article class="game-card">
+      <div class="game-icon">🏆</div>
+      <p class="eyebrow">RANK IT</p>
+      <h3>Your ultimate<br>comfort food.</h3>
+      <div class="rank-list" id="rankList"></div>
+      <button class="pill invert" id="rankBtn">Lock my ranking</button>
+      <p class="result" id="rankResult"></p>
+    </article>
+  </div>
+</section>
+
+<section id="create" class="create">
+  <div>
+    <p class="eyebrow">MAKE THE NEXT ONE</p>
+    <h2>Got a question people will fight over?</h2>
+    <p class="subtle">Submit an idea. The demo stores it only in this browser. Connect a database later for a real community.</p>
+  </div>
+  <form id="ideaForm">
+    <input id="idea" maxlength="120" placeholder="e.g. Pineapple belongs on pizza. Agree?" required>
+    <button class="pill" type="submit">Send it ↗</button>
+    <small id="ideaMsg"></small>
+  </form>
+</section>
+</main>
+
+<footer><span>SPLIT © 2026</span><span>Opinions collide. Screenshots remain.</span></footer>
+<script src="script.js"></script>
+</body>
+</html>
